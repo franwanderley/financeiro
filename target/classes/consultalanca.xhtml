@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<ui:composition template="/template.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<f:metadata>
+		<f:viewAction action="#{consultaLancamentoBean.consultar}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Consulta de Lançamentos</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frm">
+			<p:messages showDetail="false" showSummary="true" />
+
+			<p:fieldset legend="Consulta de Lancamento">
+				<p:dataTable var="lancamento"
+					value="#{consultaLancamentoBean.lancamentos}">
+                                    <p:column headerText="Pessoa" filterBy="#{lancamento.pessoa.nome}" sortBy="#{lancamento.pessoa.nome}">
+						<h:outputText value="#{lancamento.pessoa.nome}" />
+					</p:column>
+
+					<p:column headerText="Descrição" filterBy="#{lancamento.descricao}">
+						<h:outputText value="#{lancamento.descricao}" />
+					</p:column>
+
+					<p:column headerText="Tipo" filterBy="#{lancamento.tipo}">
+						<h:outputText value="#{lancamento.tipo}" />
+					</p:column>
+
+					<p:column headerText="Valor" >
+						<h:outputText value="#{lancamento.valor}">
+							<f:convertNumber locale="pt_BR" maxFractionDigits="2"
+								minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Data de Vencimento "
+						sortBy="#{lancamento.dataVencimento}">
+						<h:outputText value="#{lancamento.dataVencimento}" />
+					</p:column>
+
+					<p:column headerText="Data de Pagamento"
+						sortBy="#{lancamento.dataVencimento}">
+						<h:outputText value="#{lancamento.dataPagamento}" />
+					</p:column>
+
+					<p:column headerText="opcões">
+						<p:button icon="ui-icon-pencil" title="Editar"
+							outcome="/cadastroLancamento">
+							<f:param name="id" value="#{lancamento.id}" />
+						</p:button>
+
+						<p:commandButton icon="ui-icon-trash" title="remover"
+							process="@this" update="@form"
+							action="#{consultaLancamentoBean.remover(lancamento)}" />
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
